@@ -1,6 +1,6 @@
 # PruebaTecnica
-### Se requiere instalar los siguientes paquetes /n
-### pymysql: pip3 install PyMySQL /n
-### tkinter: pip install python-tk /n
+### Se requiere instalar los siguientes paquetes 
+### pymysql: pip3 install PyMySQL 
+### tkinter: pip install python-tk 
 ### sqlalchemy: pip install SQLAlchemy
 
