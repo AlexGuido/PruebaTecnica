@@ -1,4 +1,5 @@
 from sqlalchemy import create_engine
+import numpy as np
 import pandas as pd
 import tkinter 
 from tkinter import messagebox
@@ -41,34 +42,40 @@ sheet = a.sheet_by_index(0)
 sheet.cell_value(0,0)
 
 path = "C:\\Users\\USER\\Desktop\\Examen\\-32DPEA.xls"
-
-input_cols1 = [0,3,6,9]
-input_cols2 = [0,3]
-input_cols3 = [0,3]
-input_cols4 = [0,1]
-input_cols5 = [0,2]
+input_cols1 = [3]
+input_cols2 = [3]
+input_cols3 = [3]
+input_cols4 = [1]
+input_cols5 = [2]
 input_cols6 = [2]
+input_cols7 = [1]
+input_cols8 = [9]
 
 df1 = pd.read_excel(path, sheet_name="Sheet1", header = 2, usecols = input_cols1)
-
 df2 = pd.read_excel(path, sheet_name="Sheet1", header = 3, usecols = input_cols2)
 df3 = pd.read_excel(path, sheet_name="Sheet1", header = 4, usecols = input_cols3)
 df4 = pd.read_excel(path, sheet_name="Sheet1", header = 27, usecols = input_cols4)
 df5 = pd.read_excel(path, sheet_name="Sheet1", header = 32, usecols = input_cols5) 
 df6 = pd.read_excel(path, sheet_name="Sheet1", header = 49, usecols = input_cols6) 
+df7 = pd.read_excel(path, sheet_name="Sheet1", header = 49, usecols = input_cols7)
+df8 = pd.read_excel(path, sheet_name="Sheet1", header = 2, usecols = input_cols8)
 
 lista = []
-lista.append(df6.columns)
-lista.append(df1.columns)
-lista.append(df2.columns)
-lista.append(df3.columns)
-lista.append(df4.columns)
-lista.append(df5.columns)
+lista.append(df6.columns)#Serial_Number
+lista.append(df1.columns)#Panel_Number
+lista.append(df8.columns)#seal
+lista.append(df2.columns)#Job_Number
+lista.append(df3.columns)#Job_Name
+lista.append(df4.columns)# Type
+lista.append(df5.columns)# Modbus_ID
+lista.append(df7.columns)#Meter_No
 
-print(lista)
-
-sql = "INSERT INTO JobTraveler(id_Serial_Number, Panel_Number, Seal, Job_Number, Job_Name, Type, Modbus_ID, Meter_No) VALUES(%s,%s,%s,%s,%s,%s)"    
-thecursor.execute()
+print(len(lista))
+arreglo = np.array(lista)
+lista_arreglo=arreglo.tolist()
+print(lista_arreglo)
+sql = "INSERT INTO JobTraveler(id_Serial_Number, Panel_Number, Seal, Job_Number, Job_Name, Type, Modbus_ID, Meter_No) VALUES %s,%s,%s,%s,%s,%s,%s,%s"
+thecursor.execute(sql,lista_arreglo)
 connection.commit()
 connection.close()
 
