@@ -3,6 +3,7 @@ import pandas as pd
 import tkinter 
 from tkinter import messagebox
 import pymysql
+import xlrd
 
 def firstconnection ():
         try:
@@ -27,25 +28,49 @@ def firstconnection ():
                 messagebox.showinfo("mensaje","Por favor revise si la base de datos Exam\n y la Tabla JOB_TRAVELER ya Existe ")
 command = firstconnection()
 
-sql = "INSERT INTO JobTraveler(id_Serial_Number, Panel_Number, Seal, Job_Number, Job_Name, Type, Modbus_ID, Meter_No) VALUES()"
+path = "C:\\Users\\USER\\Desktop\\Examen\\-32DPEA.xls" 
 
 
-db="mysql"
-mydb = pymysql.Connection(host="localhost",user="root",password="",db="Exam") 
-table = "JobTraveler"
+connection= pymysql.Connection(host="localhost",user="root",password="",db="Exam") 
+thecursor=connection.cursor()
+
+l = list()
+
+a=xlrd.open_workbook(path)
+sheet = a.sheet_by_index(0)
+sheet.cell_value(0,0)
+
 path = "C:\\Users\\USER\\Desktop\\Examen\\-32DPEA.xls"
 
-url = "myslq+mysqlconnector://root: /"
-
-engine = create_engine(url + mydb, echo = False )
-
-
-
-
-
-
-input_cols = [0,3,6,9]
-input_cols1 = [0,3]
+input_cols1 = [0,3,6,9]
 input_cols2 = [0,3]
-input_cols3 = [0,1]
-input_cols4 = [0,2]
+input_cols3 = [0,3]
+input_cols4 = [0,1]
+input_cols5 = [0,2]
+input_cols6 = [2]
+
+df1 = pd.read_excel(path, sheet_name="Sheet1", header = 2, usecols = input_cols1)
+
+df2 = pd.read_excel(path, sheet_name="Sheet1", header = 3, usecols = input_cols2)
+df3 = pd.read_excel(path, sheet_name="Sheet1", header = 4, usecols = input_cols3)
+df4 = pd.read_excel(path, sheet_name="Sheet1", header = 27, usecols = input_cols4)
+df5 = pd.read_excel(path, sheet_name="Sheet1", header = 32, usecols = input_cols5) 
+df6 = pd.read_excel(path, sheet_name="Sheet1", header = 49, usecols = input_cols6) 
+
+lista = []
+lista.append(df6.columns)
+lista.append(df1.columns)
+lista.append(df2.columns)
+lista.append(df3.columns)
+lista.append(df4.columns)
+lista.append(df5.columns)
+
+print(lista)
+
+sql = "INSERT INTO JobTraveler(id_Serial_Number, Panel_Number, Seal, Job_Number, Job_Name, Type, Modbus_ID, Meter_No) VALUES(%s,%s,%s,%s,%s,%s)"    
+thecursor.execute()
+connection.commit()
+connection.close()
+
+
+
